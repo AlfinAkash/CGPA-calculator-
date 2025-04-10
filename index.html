@@ -17,10 +17,22 @@
       }
     }
   </script>
+  <style>
+    .input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 2px solid #ccc;
+      border-radius: 0.5rem;
+      outline: none;
+    }
+    .input:focus {
+      border-color: #3b82f6;
+    }
+  </style>
 </head>
 <body class="font-poppins bg-gradient-to-tr from-pink-500 via-yellow-300 to-orange-400 min-h-screen flex items-center justify-center relative">
 
-  <!-- Side menu - always visible on desktop -->
+  <!-- Side menu - visible on desktop -->
   <div class="hidden md:flex flex-col gap-4 fixed right-4 top-20 z-40">
     <a href="https://instagram.com/a.alfinakash" target="_blank" class="bg-white p-3 rounded-full shadow hover:bg-pink-100 transition">
       <img src="https://img.icons8.com/fluency/30/instagram-new.png" alt="Instagram"/>
@@ -36,16 +48,15 @@
     </a>
   </div>
 
-  <!-- Mobile hamburger -->
+  <!-- Mobile menu toggle -->
   <button onclick="toggleMenu()" class="md:hidden fixed top-4 right-4 z-50 bg-white p-2 rounded shadow">
-    <svg id="hamburger" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+    <svg id="menuIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path id="menuPath" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
     </svg>
   </button>
 
   <!-- Mobile menu -->
   <div id="mobileMenu" class="fixed top-0 right-0 w-64 h-full bg-white shadow transform translate-x-full transition-transform duration-300 md:hidden z-40 p-6">
-    <button onclick="toggleMenu()" class="absolute top-4 right-4 text-2xl text-red-500">&times;</button>
     <div class="mt-12 flex flex-col gap-6">
       <a href="https://instagram.com/a.alfinakash" target="_blank">Instagram</a>
       <a href="https://twitter.com/AlfinAkash" target="_blank">Twitter</a>
@@ -54,8 +65,8 @@
     </div>
   </div>
 
-  <!-- CGPA Calculator -->
-  <div class="bg-white w-full max-w-4xl mx-4 p-8 rounded-2xl shadow-2xl z-10">
+  <!-- CGPA Calculator Box -->
+  <div class="bg-white w-full max-w-4xl mx-4 p-8 rounded-2xl shadow-2xl z-10 mt-20">
     <h1 class="text-3xl font-bold text-center text-blue-900 mb-8">CGPA Calculator</h1>
     <form id="cgpa-form" class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div class="space-y-4">
@@ -71,45 +82,31 @@
         <div><label>Semester 8 GPA</label><input id="semester8" class="input" /></div>
       </div>
     </form>
-
-    <!-- Mobile toggle button -->
-<button onclick="toggleMenu()" class="md:hidden fixed top-4 right-4 z-50 bg-white p-2 rounded shadow">
-  <svg id="menuIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <!-- Default is hamburger -->
-    <path id="menuPath" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-  </svg>
-</button>
-
-  <style>
-    .input {
-      width: 100%;
-      padding: 0.5rem;
-      border: 2px solid #ccc;
-      border-radius: 0.5rem;
-      outline: none;
-    }
-    .input:focus {
-      border-color: #3b82f6;
-    }
-  </style>
+    <div class="mt-6 text-center">
+      <button onclick="calculateCGPA()" class="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white px-6 py-2 rounded-full shadow-lg transition">
+        Calculate CGPA
+      </button>
+      <p id="cgpa-result" class="mt-4 text-xl font-semibold text-gray-800"></p>
+    </div>
+  </div>
 
   <script>
     function toggleMenu() {
-  const menu = document.getElementById("mobileMenu");
-  const path = document.getElementById("menuPath");
+      const menu = document.getElementById("mobileMenu");
+      const path = document.getElementById("menuPath");
 
-  menu.classList.toggle("translate-x-full");
+      menu.classList.toggle("translate-x-full");
 
-  const isOpen = !menu.classList.contains("translate-x-full");
+      const isOpen = !menu.classList.contains("translate-x-full");
 
-  if (isOpen) {
-    // Show X
-    path.setAttribute("d", "M6 18L18 6M6 6l12 12");
-  } else {
-    // Show Hamburger
-    path.setAttribute("d", "M4 6h16M4 12h16M4 18h16");
-  }
-}
+      if (isOpen) {
+        // Show X
+        path.setAttribute("d", "M6 18L18 6M6 6l12 12");
+      } else {
+        // Show Hamburger
+        path.setAttribute("d", "M4 6h16M4 12h16M4 18h16");
+      }
+    }
 
     function calculateCGPA() {
       let total = 0, count = 0;
