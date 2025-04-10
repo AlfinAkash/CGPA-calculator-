@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CGPA Calculator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="bg-gradient-to-tr from-pink-300 to-yellow-200 min-h-screen flex flex-col items-center justify-center p-4">
+
+  <!-- Header with Hamburger -->
+  <div class="w-full max-w-3xl flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-blue-900">CGPA Calculator</h1>
+    <div class="relative">
+      <button id="menu-toggle" class="text-2xl focus:outline-none">
+        <i class="fas fa-bars" id="menu-icon"></i>
+      </button>
+      <div id="menu-content" class="hidden absolute right-0 mt-2 bg-white shadow-lg rounded-lg p-4 space-x-4 flex">
+        <a href="https://instagram.com/a.alfinakash" target="_blank"><i class="fab fa-instagram text-pink-600 text-xl"></i></a>
+        <a href="https://twitter.com/AlfinAkash" target="_blank"><i class="fab fa-twitter text-blue-400 text-xl"></i></a>
+        <a href="https://linkedin.com/in/AlfinAkash" target="_blank"><i class="fab fa-linkedin text-blue-600 text-xl"></i></a>
+        <a href="https://github.com/AlfinAkash" target="_blank"><i class="fab fa-github text-gray-800 text-xl"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Card -->
+  <div class="w-full max-w-3xl bg-white p-6 rounded-xl shadow-md">
+    <form id="cgpa-form" class="grid md:grid-cols-2 gap-4">
+      <!-- Semester Inputs -->
+      <template id="input-template">
+        <div>
+          <label class="font-semibold block">Semester GPA:</label>
+          <input type="text" maxlength="5" class="w-full border-b-2 border-blue-500 outline-none py-1 px-2">
+        </div>
+      </template>
+
+      <!-- 8 Inputs -->
+      <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          const form = document.getElementById("cgpa-form");
+          const template = document.getElementById("input-template").content;
+          for (let i = 1; i <= 8; i++) {
+            const clone = document.importNode(template, true);
+            clone.querySelector("label").textContent = `Semester ${i} GPA:`;
+            const input = clone.querySelector("input");
+            input.id = "semester" + i;
+            form.appendChild(clone);
+          }
+        });
+      </script>
+    </form>
+
+    <button onclick="calculateCGPA()" class="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold">Calculate CGPA</button>
+
+    <div id="cgpa-result" class="mt-4 text-center text-2xl font-bold text-green-600"></div>
+  </div>
+
+  <script>
+    function isNumeric(value) {
+      return /^\d+(\.\d+)?$/.test(value);
+    }
+
+    function calculateCGPA() {
+      const filledFields = [];
+      for (let i = 1; i <= 8; i++) {
+        const el = document.getElementById("semester" + i);
+        const value = el.value.trim();
+        if (value !== "") {
+          const mark = parseFloat(value);
+          if (!isNumeric(value) || mark < 0 || mark > 10) {
+            alert(`Please enter valid GPA (0-10) for Semester ${i}`);
+            return;
+          }
+          filledFields.push(mark * 10);
+        }
+      }
+      if (filledFields.length === 0) {
+        alert("Please enter at least one semester GPA.");
+        return;
+      }
+      const cgpa = (filledFields.reduce((a, b) => a + b, 0) / (filledFields.length * 10)).toFixed(2);
+      document.getElementById("cgpa-result").textContent = "CGPA: " + cgpa;
+    }
+
+    // Menu toggle
+    document.getElementById("menu-toggle").addEventListener("click", function () {
+      const menu = document.getElementById("menu-content");
+      const icon = document.getElementById("menu-icon");
+      if (menu.classList.contains("hidden")) {
+        menu.classList.remove("hidden");
+        icon.classList.remove("fa-bars");
+        icon.classList.add("fa-times");
+      } else {
+        menu.classList.add("hidden");
+        icon.classList.remove("fa-times");
+        icon.classList.add("fa-bars");
+      }
+    });
+  </script>
+</body>
+
+</html>
