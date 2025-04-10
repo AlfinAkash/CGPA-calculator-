@@ -1,65 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CGPA Calculator</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            poppins: ['Poppins', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
 </head>
+<body class="bg-gradient-to-tr from-pink-400 via-yellow-200 to-rose-300 min-h-screen flex items-center justify-center font-poppins">
 
-<body class="bg-gradient-to-tr from-pink-300 to-yellow-200 min-h-screen flex flex-col items-center justify-center p-4">
-
-  <!-- Header with Hamburger -->
-  <div class="w-full max-w-3xl flex justify-between items-center mb-6">
-    <h1 class="text-3xl font-bold text-blue-900">CGPA Calculator</h1>
-    <div class="relative">
-      <button id="menu-toggle" class="text-2xl focus:outline-none">
-        <i class="fas fa-bars" id="menu-icon"></i>
-      </button>
-      <div id="menu-content" class="hidden absolute right-0 mt-2 bg-white shadow-lg rounded-lg p-4 space-x-4 flex">
-        <a href="https://instagram.com/a.alfinakash" target="_blank"><i class="fab fa-instagram text-pink-600 text-xl"></i></a>
-        <a href="https://twitter.com/AlfinAkash" target="_blank"><i class="fab fa-twitter text-blue-400 text-xl"></i></a>
-        <a href="https://linkedin.com/in/AlfinAkash" target="_blank"><i class="fab fa-linkedin text-blue-600 text-xl"></i></a>
-        <a href="https://github.com/AlfinAkash" target="_blank"><i class="fab fa-github text-gray-800 text-xl"></i></a>
-      </div>
+  <!-- Side menu -->
+  <div id="sideMenu" class="fixed top-0 right-0 h-full w-64 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50 p-6">
+    <button onclick="toggleMenu()" class="text-red-500 text-2xl font-bold absolute top-4 right-4">&times;</button>
+    <div class="mt-12 flex flex-col items-center gap-6">
+      <a href="https://www.instagram.com/a.alfinakash" target="_blank" class="text-pink-600 text-xl hover:underline">Instagram</a>
+      <a href="https://www.twitter.com/AlfinAkash" target="_blank" class="text-blue-500 text-xl hover:underline">Twitter</a>
+      <a href="https://www.linkedin.com/in/AlfinAkash" target="_blank" class="text-blue-700 text-xl hover:underline">LinkedIn</a>
+      <a href="https://github.com/AlfinAkash" target="_blank" class="text-gray-800 text-xl hover:underline">GitHub</a>
     </div>
   </div>
 
-  <!-- Form Card -->
-  <div class="w-full max-w-3xl bg-white p-6 rounded-xl shadow-md">
-    <form id="cgpa-form" class="grid md:grid-cols-2 gap-4">
-      <!-- Semester Inputs -->
-      <template id="input-template">
-        <div>
-          <label class="font-semibold block">Semester GPA:</label>
-          <input type="text" maxlength="5" class="w-full border-b-2 border-blue-500 outline-none py-1 px-2">
-        </div>
-      </template>
+  <div class="container max-w-4xl bg-white p-8 rounded-2xl shadow-2xl relative w-full mx-4">
+    <!-- Hamburger -->
+    <button onclick="toggleMenu()" class="absolute top-6 right-6 z-40 block md:hidden">
+      <div class="space-y-1">
+        <div class="w-6 h-0.5 bg-black"></div>
+        <div class="w-6 h-0.5 bg-black"></div>
+        <div class="w-6 h-0.5 bg-black"></div>
+      </div>
+    </button>
 
-      <!-- 8 Inputs -->
-      <script>
-        document.addEventListener("DOMContentLoaded", () => {
-          const form = document.getElementById("cgpa-form");
-          const template = document.getElementById("input-template").content;
-          for (let i = 1; i <= 8; i++) {
-            const clone = document.importNode(template, true);
-            clone.querySelector("label").textContent = `Semester ${i} GPA:`;
-            const input = clone.querySelector("input");
-            input.id = "semester" + i;
-            form.appendChild(clone);
-          }
-        });
-      </script>
+    <h1 class="text-3xl font-bold text-center text-blue-900 mb-8">CGPA Calculator</h1>
+    <form id="cgpa-form" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="space-y-4">
+        <InputWithLabel label="Semester 1 GPA" id="semester1" />
+        <InputWithLabel label="Semester 2 GPA" id="semester2" />
+        <InputWithLabel label="Semester 3 GPA" id="semester3" />
+        <InputWithLabel label="Semester 4 GPA" id="semester4" />
+      </div>
+      <div class="space-y-4">
+        <InputWithLabel label="Semester 5 GPA" id="semester5" />
+        <InputWithLabel label="Semester 6 GPA" id="semester6" />
+        <InputWithLabel label="Semester 7 GPA" id="semester7" />
+        <InputWithLabel label="Semester 8 GPA" id="semester8" />
+      </div>
     </form>
 
-    <button onclick="calculateCGPA()" class="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold">Calculate CGPA</button>
-
-    <div id="cgpa-result" class="mt-4 text-center text-2xl font-bold text-green-600"></div>
+    <div class="mt-8 text-center">
+      <button onclick="calculateCGPA()" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Calculate CGPA</button>
+      <div id="cgpa-result" class="mt-4 text-2xl font-bold text-green-600"></div>
+    </div>
   </div>
 
   <script>
+    function toggleMenu() {
+      const menu = document.getElementById("sideMenu");
+      menu.classList.toggle("translate-x-full");
+    }
+
     function isNumeric(value) {
       return /^\d+(\.\d+)?$/.test(value);
     }
@@ -67,40 +76,35 @@
     function calculateCGPA() {
       const filledFields = [];
       for (let i = 1; i <= 8; i++) {
-        const el = document.getElementById("semester" + i);
-        const value = el.value.trim();
-        if (value !== "") {
-          const mark = parseFloat(value);
-          if (!isNumeric(value) || mark < 0 || mark > 10) {
-            alert(`Please enter valid GPA (0-10) for Semester ${i}`);
+        const val = document.getElementById("semester" + i).value;
+        if (val !== '') {
+          const mark = parseFloat(val);
+          if (mark < 0 || mark > 10 || !isNumeric(val)) {
+            alert("Please enter valid GPA (0-10) for Semester " + i);
             return;
           }
           filledFields.push(mark * 10);
         }
       }
+
       if (filledFields.length === 0) {
         alert("Please enter at least one semester GPA.");
         return;
       }
-      const cgpa = (filledFields.reduce((a, b) => a + b, 0) / (filledFields.length * 10)).toFixed(2);
+
+      const cgpa = (filledFields.reduce((a, b) => a + b, 0) / filledFields.length / 10).toFixed(2);
       document.getElementById("cgpa-result").textContent = "CGPA: " + cgpa;
     }
 
-    // Menu toggle
-    document.getElementById("menu-toggle").addEventListener("click", function () {
-      const menu = document.getElementById("menu-content");
-      const icon = document.getElementById("menu-icon");
-      if (menu.classList.contains("hidden")) {
-        menu.classList.remove("hidden");
-        icon.classList.remove("fa-bars");
-        icon.classList.add("fa-times");
-      } else {
-        menu.classList.add("hidden");
-        icon.classList.remove("fa-times");
-        icon.classList.add("fa-bars");
-      }
-    });
+    // Reusable input with label
+    function InputWithLabel({ label, id }) {
+      document.write(`
+        <div>
+          <label class="block font-semibold mb-1" for="${id}">${label}</label>
+          <input type="text" id="${id}" maxlength="5" class="w-full px-3 py-2 border-b-2 border-blue-400 focus:outline-none focus:border-blue-600 transition" />
+        </div>
+      `);
+    }
   </script>
 </body>
-
 </html>
